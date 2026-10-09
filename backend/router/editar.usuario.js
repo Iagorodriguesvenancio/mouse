@@ -15,26 +15,25 @@ router.use(express.json());
 router.use(cookieParser());
 
 router.post("/",auth, async (req,res)=>{
+  let hashedPassword;
   if (req.user.adm == 1) {
     let { username, email, password, status, adm, id_user } = req.body;
     if(password !== null){
-      const hashedPassword = await bcrypt.hash(password, 10);
+       hashedPassword = await bcrypt.hash(password, 10);
     }else{
-      const hashedPassword = null;
+       hashedPassword = null;
     }
     User.updateUser((error) => {
       if (error) {
         return res.status(500).json({
-          logado: false,
-          mensagem: "Erro ao atualizar usuário",
+          men: "Erro ao atualizar usuário",
           erro: error.message,
         });
       }
       return res.status(201).json({
-        logado: true,
-        mensagem: "Usuário atualizado com sucesso",
+        men: "Usuário atualizado com sucesso",
       });
-    },{username, email,hashedPassword,status,adm,id_user});
+    },{username, email,password:hashedPassword,status,adm,id_user});
   } else {
     res.status(403).json({ men: "rota de adm" });
   }

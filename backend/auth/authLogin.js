@@ -9,6 +9,7 @@ function auth(req, res, next) {
   }
   try {
     req.user = jwt.verify(token, JWT_SECRET);
+    console.log("Token verificado com sucesso:", req.user);
     next();
   } catch {
     res.status(401).json({ error: "Token inválido ou expirado" });
