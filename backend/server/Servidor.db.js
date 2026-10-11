@@ -29,6 +29,16 @@ module.exports = class Servidor{
             }  
         )
     }
+    static getServidorBusca(callback,nome){
+        Servidor.connect().query(
+            "SELECT servidor.nome,servidor.descricao,usuarios.username  FROM `servidor` JOIN usuarios ON servidor.proprietário_server = usuarios.id_user WHERE servidor.nome like ?",
+            [`%${nome}%`],
+            (error,resultado) =>{
+            
+                callback(error,resultado)
+            }
+        )
+    }
 
     static updateServidor(callback,dados){
         Servidor.connect().query(
@@ -51,6 +61,16 @@ module.exports = class Servidor{
             ["DESATIVADO",dados.id_servidor],
             error=>{
                 callback(error)
+            }
+        )
+    }
+
+    static ligacao(callback,dados){
+        Servidor.connect().query(
+            "INSERT INTO `membros`(id_user, id_servidor) VALUES (?,?)",
+            [dados.id_user, dados.id_servidor],
+            (error,resultado)=>{
+                callback(error,resultado)
             }
         )
     }

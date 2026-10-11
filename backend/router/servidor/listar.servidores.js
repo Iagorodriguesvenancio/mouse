@@ -4,8 +4,8 @@ const cookieParser = require('cookie-parser');
 
 const dotenv = require('dotenv').config();
 
-const Servidor = require('../server/Servidor.db.js');
-const auth = require('../auth/authLogin.js');
+const Servidor = require('../../server/Servidor.db.js');
+const auth = require('../../auth/authLogin.js');
 
 const router = express.Router();
 router.use(express.json());

@@ -2,16 +2,20 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv').config();
 
-const cadastroRouter = require('./router/cadastro.js');
-const loginRouter = require('./router/login.js');
-const listarUsuarioRouter = require('./router/listar.usuario.js');
-const editarUsuarioRouter = require('./router/editar.usuario.js');
-const desativarUsuarioRouter = require('./router/desativar.usuario.js');
+const cadastroRouter = require('./router/usuarios/cadastro.js');
+const loginRouter = require('./router/usuarios/login.js');
+const listarUsuarioRouter = require('./router/usuarios/listar.usuario.js');
+const buscarUsuarioRouter = require("./router/usuarios/buscar.usuarios.js")
+const editarUsuarioRouter = require('./router/usuarios/editar.usuario.js');
+const desativarUsuarioRouter = require('./router/usuarios/desativar.usuario.js');
 
-const criarServidorRouter = require('./router/criar.servidores.js');
-const listarServidorRouter = require('./router/listar.servidores.js');
-const editarServidorRouter = require('./router/editar.servidor.js');
-const desativarServidorRouter = require('./router/desativar.servidor.js');
+const criarServidorRouter = require('./router/servidor/criar.servidores.js');
+const listarServidorRouter = require('./router/servidor/listar.servidores.js');
+const buscarServidorRouter = require("./router/servidor/buscar.servidor.js")
+const editarServidorRouter = require('./router/servidor/editar.servidor.js');
+const desativarServidorRouter = require('./router/servidor/desativar.servidor.js');
+
+const ligacao = require("./router/ligacao.js")
 
 const app = express();
 app.use(cors({
@@ -38,6 +42,13 @@ app.use("/editar/servidores", editarServidorRouter);
 // <-- rotas desativar -->
 app.use("/desativar/usuarios", desativarUsuarioRouter);
 app.use("/desativar/servidores", desativarServidorRouter);
+
+// <-- rotas buscar -->
+app.use("/buscar/usuarios", buscarUsuarioRouter)
+app.use("/buscar/servidores", buscarServidorRouter)
+
+// <-- rota ligacao-->
+app.use("/ligacao", ligacao)
 
 app.listen(3000, () => {
   console.log('Servidor rodando na porta 3000');

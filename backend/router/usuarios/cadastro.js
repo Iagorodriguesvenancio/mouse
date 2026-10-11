@@ -7,7 +7,7 @@ const bcrypt = require('bcrypt');
 const dotenv = require('dotenv').config();
 const JWT_SECRET = process.env.JWT_SECRET;
 
-const User = require('../server/User.db.js');
+const User = require('../../server/User.db.js');
 
 const router = express.Router();
 router.use(express.json());

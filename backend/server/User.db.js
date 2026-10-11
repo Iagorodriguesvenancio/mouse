@@ -37,8 +37,19 @@ module.exports = class User{
 
     static getUser(callback){
         User.connect().query(
-            "SELECT * FROM `usuarios`",
+            "SELECT id_user,email,username,cpf,status,data_criacao,adm FROM `usuarios`",
             (error,resultado) =>{
+                callback(error,resultado)
+            }
+        )
+    }
+
+    static getUserBusca(callback,username){
+        User.connect().query(
+            "SELECT id_user,email,username,cpf,status,data_criacao,adm FROM `usuarios` WHERE username like ?",
+            [`%${username}%`],
+            (error,resultado) =>{
+            
                 callback(error,resultado)
             }
         )
@@ -46,7 +57,7 @@ module.exports = class User{
 
     static getUserId(callback,dados){
         User.connect().query(
-            "SELECT * FROM `usuarios` WHERE id_user = ?",
+            "SELECT id_user,email,username,cpf,status,data_criacao,adm FROM `usuarios` WHERE id_user = ?",
             [dados.id],
             (error,resultado) => {
                 callback(error,resultado)

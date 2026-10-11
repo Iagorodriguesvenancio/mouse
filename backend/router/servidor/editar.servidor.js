@@ -7,8 +7,8 @@ const bcrypt = require('bcrypt');
 const dotenv = require('dotenv').config();
 const JWT_SECRET = process.env.JWT_SECRET;
 
-const Servidor = require('../server/Servidor.db.js');
-const auth = require('../auth/authLogin.js');
+const Servidor = require('../../server/Servidor.db.js');
+const auth = require('../../auth/authLogin.js');
 
 const router = express.Router();
 router.use(express.json());
