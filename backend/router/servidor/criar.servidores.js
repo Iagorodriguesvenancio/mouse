@@ -21,10 +21,10 @@ router.post("/", auth,async (req, res) => {
     return res.status(500).json({ men: "todos os campos são obrigatorios" });
   }
   Servidor.createServidor(
-    (error, servidorId) => {
+    (error) => {
       if (error) return res.status(500).json({ men: "erro ao criar servidor", error: error });
 
-      res.json({ message: "servidor criado" , servidorId: servidorId });
+      res.json({ message: "servidor criado"});
     },
     { nome, descricao, id_user: req.user.userId },
   );

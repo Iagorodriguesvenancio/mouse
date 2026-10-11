@@ -15,6 +15,10 @@ const buscarServidorRouter = require("./router/servidor/buscar.servidor.js")
 const editarServidorRouter = require('./router/servidor/editar.servidor.js');
 const desativarServidorRouter = require('./router/servidor/desativar.servidor.js');
 
+const criarCanaisRouter = require("./router/canais/criar.canais.js")
+const listarCanaisRouter = require("./router/canais/listar.canais.js")
+const editarCanaisRouter = require("./router/canais/editar.canais.js")
+
 const ligacao = require("./router/ligacao.js")
 
 const app = express();
@@ -30,14 +34,17 @@ app.use('/login', loginRouter);
 
 // <-- rotas criar -->
 app.use("/criar/servidores", criarServidorRouter);
+app.use("/criar/canais", criarCanaisRouter)
 
 // <-- rotas listar -->
 app.use("/listar/usuarios", listarUsuarioRouter);
 app.use("/listar/servidores", listarServidorRouter);
+app.use("/listar/canais", listarCanaisRouter)
 
 // <-- rotas editar --> 
 app.use("/editar/usuarios", editarUsuarioRouter);
 app.use("/editar/servidores", editarServidorRouter);
+app.use("/editar/canais", editarCanaisRouter)
 
 // <-- rotas desativar -->
 app.use("/desativar/usuarios", desativarUsuarioRouter);

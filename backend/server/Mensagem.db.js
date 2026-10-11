@@ -10,4 +10,8 @@ module.exports = class Mensagem{
         })
         return connection
     }
+
+    static getMensagem(){
+        
+    }
 }
