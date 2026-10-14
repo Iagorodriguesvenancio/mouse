@@ -19,6 +19,10 @@ const criarCanaisRouter = require("./router/canais/criar.canais.js")
 const listarCanaisRouter = require("./router/canais/listar.canais.js")
 const editarCanaisRouter = require("./router/canais/editar.canais.js")
 
+const criarMensagemRouter = require("./router/mensagem/criar.mensagem.js")
+const listarMensagemRouter = require("./router/mensagem/listar.mensagem.js")
+const editarMensagemRouter = require("./router/mensagem/editar.mensgem.js")
+
 const ligacao = require("./router/ligacao.js")
 
 const app = express();
@@ -35,16 +39,19 @@ app.use('/login', loginRouter);
 // <-- rotas criar -->
 app.use("/criar/servidores", criarServidorRouter);
 app.use("/criar/canais", criarCanaisRouter)
+app.use("/criar/mensagem", criarMensagemRouter)
 
 // <-- rotas listar -->
 app.use("/listar/usuarios", listarUsuarioRouter);
 app.use("/listar/servidores", listarServidorRouter);
 app.use("/listar/canais", listarCanaisRouter)
+app.use("/listar/mensagem", listarMensagemRouter)
 
 // <-- rotas editar --> 
 app.use("/editar/usuarios", editarUsuarioRouter);
 app.use("/editar/servidores", editarServidorRouter);
 app.use("/editar/canais", editarCanaisRouter)
+app.use("/editar/mensagem", editarMensagemRouter)
 
 // <-- rotas desativar -->
 app.use("/desativar/usuarios", desativarUsuarioRouter);
