@@ -1,18 +1,19 @@
 const mysql = require("mysql2")
-const dotenv = require ("dotenv")
+const dotenv = require ("dotenv").config()
 const data = new Date()
-module.exports = class User{
-    static connect(){
-        const connection = mysql.createConnection({ //inica o coneção com o xampp
-            user: process.env.user,       // padrão do XAMPP
-            password: process.env.password,
-            database: process.env.database //nome do banco de dados 
-        })
-        return connection
-    }
 
+const pool = mysql.createPool({
+    host: process.env.host || "localhost",
+    user: process.env.user,
+    password: process.env.password,
+    database: process.env.database,
+    waitForConnections: true,
+    connectionLimit: 10,
+})
+
+module.exports = class User{
     static createUser(callback,dados){
-        User.connect().query(
+        pool.query(
             "INSERT INTO usuarios(username,email, cpf, password, data_criacao) VALUES (?,?,?,?,?)",
             [dados.username, dados.email,dados.cpf, dados.password, `${data.getDate()}/${data.getMonth() + 1}/${data.getFullYear()} - ${data.getHours()}:${data.getMinutes()}:${data.getSeconds()}`],
             (error,resultado) =>{
@@ -26,7 +27,7 @@ module.exports = class User{
     }
 
     static logar(callback,dados){
-        User.connect().query(
+        pool.query(
             "SELECT id_user,cpf, password,adm FROM `usuarios` WHERE cpf = ?",
             [dados.cpf],
             (error,resultado) => {
@@ -36,7 +37,7 @@ module.exports = class User{
     }
 
     static getUser(callback){
-        User.connect().query(
+        pool.query(
             "SELECT id_user,email,username,cpf,status,data_criacao,adm FROM `usuarios`",
             (error,resultado) =>{
                 callback(error,resultado)
@@ -45,7 +46,7 @@ module.exports = class User{
     }
 
     static getUserBusca(callback,username){
-        User.connect().query(
+        pool.query(
             "SELECT id_user,email,username,cpf,status,data_criacao,adm FROM `usuarios` WHERE username like ?",
             [`%${username}%`],
             (error,resultado) =>{
@@ -56,7 +57,7 @@ module.exports = class User{
     }
 
     static getUserId(callback,dados){
-        User.connect().query(
+        pool.query(
             "SELECT id_user,email,username,cpf,status,data_criacao,adm FROM `usuarios` WHERE id_user = ?",
             [dados.id],
             (error,resultado) => {
@@ -66,7 +67,7 @@ module.exports = class User{
     }
 
     static desativarUser(callback,dados){
-        User.connect().query(
+        pool.query(
             "UPDATE usuarios SET status= ? WHERE id_user = ?",
             ["DESATIVADO",dados.id],
             error=>{
@@ -76,7 +77,7 @@ module.exports = class User{
     }
 
     static updateUser(callback,dados){
-        User.connect().query(
+        pool.query(
             "UPDATE usuarios SET username = COALESCE(?, username), email = COALESCE(?, email) ,password = COALESCE(?, password), status   = COALESCE(?, status), adm = COALESCE(?, adm) WHERE id_user = ?",
             [
                 dados.username,

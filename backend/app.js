@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const http = require('http');              
+const WebSocket = require('ws');  
 const dotenv = require('dotenv').config();
 
 const cadastroRouter = require('./router/usuarios/cadastro.js');
@@ -31,6 +33,9 @@ app.use(cors({
   methods: ["GET", "POST", "OPTIONS", "UPDATE"], // Métodos permitidos
   allowedHeaders: ["Content-Type"], // Cabeçalhos permitidos
 }));
+
+const server = http.createServer(app);     
+const wss = new WebSocket.Server({ server })
 
 // <-- rotas cadastro e login -->
 app.use('/cadastro', cadastroRouter);
@@ -64,6 +69,6 @@ app.use("/buscar/servidores", buscarServidorRouter)
 // <-- rota ligacao-->
 app.use("/ligacao", ligacao)
 
-app.listen(3000, () => {
+server.listen(3000, () => {
   console.log('Servidor rodando na porta 3000');
 });
