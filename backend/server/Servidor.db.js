@@ -14,8 +14,8 @@ module.exports = class Servidor{
 
     static createServidor(callback,dados){
         pool.query(
-            "INSERT INTO servidor (nome,descricao, proprietário_server) VALUES (?,?,?)",
-            [dados.nome, dados.descricao, dados.id_user],
+            "INSERT INTO servidor (nome,descricao, proprietário_server, materia) VALUES (?,?,?,?)",
+            [dados.nome, dados.descricao, dados.id_user,dados.materia],
             (error)=>{
                 callback(error)
             }
@@ -24,7 +24,7 @@ module.exports = class Servidor{
 
     static getServidor(callback){
         pool.query(
-            "SELECT servidor.nome,servidor.descricao,usuarios.username  FROM `servidor` JOIN usuarios ON servidor.proprietário_server = usuarios.id_user",
+            "SELECT servidor.nome,servidor.descricao,usuarios.username,materias.nome FROM `servidor` JOIN usuarios ON servidor.proprietário_server = usuarios.id_user JOIN materias ON servidor.materia = materias.nome",
             (error,resultado)=>{
                 callback(error,resultado)
             }  
@@ -33,7 +33,7 @@ module.exports = class Servidor{
     
     static getServidorBusca(callback,nome){
         pool.query(
-            "SELECT servidor.nome,servidor.descricao,usuarios.username  FROM `servidor` JOIN usuarios ON servidor.proprietário_server = usuarios.id_user WHERE servidor.nome like ?",
+            "SELECT servidor.nome,servidor.descricao,usuarios.username,materias.nome FROM `servidor` JOIN usuarios ON servidor.proprietário_server = usuarios.id_user JOIN materias ON servidor.materia = materias.nome WHERE servidor.nome like ?",
             [`%${nome}%`],
             (error,resultado) =>{
             
