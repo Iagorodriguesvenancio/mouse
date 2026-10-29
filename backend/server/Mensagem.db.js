@@ -23,7 +23,7 @@ module.exports = class Mensagem{
 
     static getMensagem(callback,dados){
         pool.query(
-            "SELECT id_user, mensagem FROM mensagem WHERE id_canal = ?",
+            "SELECT id_user, mensagem FROM mensagem WHERE id_canal = ? and status != 'APAGADA'",
             [dados.id_canal],
             (error,resultado)=>{
                 callback(error,resultado)
@@ -33,12 +33,22 @@ module.exports = class Mensagem{
 
     static updateMensagem(callback,dados){
         pool.query(
-            "UPDATE mensagem SET mensagem = COALESCE(?, mensagem) WHERE id = ?",
+            "UPDATE mensagem SET mensagem = COALESCE(?, mensagem) WHERE id_mensagem  = ?",
             [
                 dados.mensagem,
-                dados.id
+                dados.id_mensagem 
             ],
              error=>{
+                callback(error)
+            }
+        )
+    }
+
+    static desativarMensagem(callback,dados){
+        pool.query(
+            "UPDATE mensagem SET status = ? WHERE id_mensagem =?",
+            ["APAGADA",dados.id_canal],
+            error =>{
                 callback(error)
             }
         )

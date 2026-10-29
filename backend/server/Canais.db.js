@@ -23,7 +23,7 @@ module.exports = class Canais{
 
     static getCanais(callback,dados){
         pool.query(
-            "SELECT nome,descricao FROM canais WHERE id_servidor = ?",
+            "SELECT nome,descricao FROM canais WHERE id_servidor = ? and status != 'DESATIVADO'",
             [dados.id_servidor],
             (error,resultado)=>{
                 callback(error,resultado)
@@ -40,6 +40,16 @@ module.exports = class Canais{
                 dados.id_canal
             ],
              error=>{
+                callback(error)
+            }
+        )
+    }
+
+    static desativarCanais(callback,dados){
+        pool.query(
+            "UPDATE canais SET status = ? WHERE id_canal = ?",
+            ["DESATIVADO", dados.id_canal],
+            error => {
                 callback(error)
             }
         )
