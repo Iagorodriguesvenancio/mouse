@@ -15,18 +15,16 @@ router.use(cookieParser());
 
 
 router.post("/", async (req, res) => {
-  const { email, username, cpf, password } = req.body;
-  if (!email || !username || !cpf || !password) {
-    return res.status(500).json({ men: "todos os campos são obrigatorios" });
+  const { username,descricao, email, cpf, password } = req.body;
+  if (!username || !email || !cpf || !password) {
+    return res.status(500).json({ mensagem: "todos os campos são obrigatorios" });
   }
   const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedCPF = await bcrypt.hash(cpf, 10);
 
   User.createUser(
     (error, userId) => {
-      if (error)
-        return res
-          .status(500)
-          .json({ men: "erro ao criar usuario", error: error });
+      if (error) return res.status(500).json({ mensagem: "erro ao criar usuario", error: error });
 
       const token = jwt.sign({ userId: userId, adm: 0 }, JWT_SECRET, {
         expiresIn: "24h",
@@ -37,9 +35,9 @@ router.post("/", async (req, res) => {
         sameSite: "strict",
         maxAge: 60 * 60 * 1000,
       });
-      res.json({ message: "usuario criado" });
+      return res.json({ mensagem: "usuario criado" });
     },
-    { username, email, cpf, password: hashedPassword },
+    { username, descricao, pronome, email, cpf:hashedCPF, password: hashedPassword },
   );
 });
 

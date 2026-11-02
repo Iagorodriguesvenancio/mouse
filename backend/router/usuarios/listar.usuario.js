@@ -14,14 +14,11 @@ router.use(cookieParser());
 router.get("/", auth, (req, res) => {
     if (req.user.adm == 1) {
         User.getUser((error, resultado) => {
-            if (error)
-                res
-                    .status(500)
-                    .json({ mensagem: "erro ao pegar usuarios", error: error });
-            res.status(200).json(resultado);
+            if (error) return res.status(500).json({ mensagem: "erro ao pegar usuarios", error: error });
+            return res.status(200).json(resultado);
         });
     } else {
-        res.status(403).json({ men: "rota de adm" });
+        return res.status(403).json({ mensagem: "rota de adm" });
     }
 })
 

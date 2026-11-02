@@ -16,14 +16,17 @@ router.use(cookieParser());
 router.post("/", async (req, res) => {
     const { cpf, password } = req.body;
     if (!cpf || !password) {
-        return res.status(500).json({ men: "todos os campos são obrigatorios" });
+        return res.status(500).json({ mensagem: "todos os campos são obrigatorios" });
     }
+
+    const hashedCPF = await bcrypt.hash(cpf, 10);
+    
     User.logar(
         async (error, resultado) => {
-            if (error) return res.status(500).json({ men: "erro ao logar", error: error });
+            if (error) return res.status(500).json({ mensagem: "erro ao logar", error: error });
 
             if (!resultado || resultado.length === 0) {
-                return res.status(401).json({men: "CPF não encontrado"});
+                return res.status(401).json({mensagem: "CPF não encontrado"});
             }
             if (bcrypt.compareSync(password, String(resultado[0].password))) {
                 const token = jwt.sign(
@@ -37,10 +40,10 @@ router.post("/", async (req, res) => {
                     sameSite: "strict",
                     maxAge: 60 * 60 * 1000,
                 });
-                res.json({ message: "Login realizado" });
+                return res.json({ message: "Login realizado" });
             }
         },
-        { cpf },
+        { cpf:hashedCPF },
     );
 })
 

@@ -20,12 +20,12 @@ router.post("/",auth, async (req,res)=>{
     Canais.updateCanais((error) => {
       if (error) {
         return res.status(500).json({
-          men: "Erro ao atualizar Canais",
+          mensagem: "Erro ao atualizar Canais",
           erro: error.message,
         });
       }
       return res.status(201).json({
-        men: "Canais atualizado com sucesso",
+        mensagem: "Canais atualizado com sucesso",
       });
     },{nome,descricao,id_canal});
 })

@@ -22,13 +22,13 @@ router.post("/", auth, (req, res) => {
         });
     }
 
-    Servidor.desativarServidor((error, resultado) => {
+    Servidor.desativarServidor((error) => {
         if (error) res.status(500).json({ mensagem: "erro ao pegar servidores", error: error });
 
         return res.status(201).json({
             mensagem: "servidor deletado"
         });
-    }, { id_servidor })
+    }, { id_servidor,proprietário_server:req.auth.userId })
 
 })
 

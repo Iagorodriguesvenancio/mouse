@@ -23,11 +23,9 @@ router.post("/", auth, (req, res) => {
     }
     if (req.user.adm == 1) {
         User.desativarUser((error, resultado) => {
-            if (error)res.status(500).json({ mensagem: "erro ao pegar usuarios", error: error });
+            if (error)return res.status(500).json({ mensagem: "erro ao pegar usuarios", error: error });
             
-             return res.status(201).json({
-            mensagem: "usuario deletado"
-        });
+             return res.status(201).json({mensagem: "usuario deletado"});
         },{id})
     }else{
          res.status(403).json({ men: "rota de adm" });

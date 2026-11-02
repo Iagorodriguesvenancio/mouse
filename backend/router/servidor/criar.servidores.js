@@ -16,17 +16,17 @@ router.use(cookieParser());
 
 
 router.post("/", auth,async (req, res) => {
-  const { nome, descricao } = req.body;
-  if (!nome || !descricao ) {
-    return res.status(500).json({ men: "todos os campos são obrigatorios" });
+  const { nome, descricao ,materia} = req.body;
+  if (!nome || !descricao || !materia ) {
+    return res.status(500).json({ mensagem: "todos os campos são obrigatorios" });
   }
   Servidor.createServidor(
     (error) => {
-      if (error) return res.status(500).json({ men: "erro ao criar servidor", error: error });
+      if (error) return res.status(500).json({ mensagem: "erro ao criar servidor", error: error });
 
-      res.json({ message: "servidor criado"});
+      res.json({ mensagem: "servidor criado"});
     },
-    { nome, descricao, id_user: req.user.userId },
+    { nome, descricao, id_user: req.user.userId,materia },
   );
 });
 

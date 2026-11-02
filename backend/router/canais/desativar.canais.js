@@ -18,13 +18,13 @@ router.post("/",auth,(req,res) =>{
     Canais.desativarCanais((error)=>{
         if(error){
             return res.status(500).json({ 
-                men: "Erro ao atualizar Canais",
+                mensagem: "Erro ao atualizar Canais",
                 erro: error.message
             })
         }
 
         return res.status(201).json({
-            men: "Canais desativado com sucesso",
+            mensagem: "Canais desativado com sucesso",
         });
     },{id_canal})
 })

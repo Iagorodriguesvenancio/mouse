@@ -16,17 +16,20 @@ router.use(cookieParser());
 
 
 router.post("/", auth,async (req, res) => {
+
   const { id_servidor,nome, descricao } = req.body;
+
   if (!id_servidor || !nome || !descricao ) {
-    return res.status(500).json({ men: "todos os campos são obrigatorios" });
+    return res.status(422).json({ mensagem: "todos os campos são obrigatorios" });
   }
+  
   Canais.createCanais(
     (error) => {
-      if (error) return res.status(500).json({ men: "erro ao criar o canal", error: error });
+      if (error) return res.status(500).json({ mensagem: "erro ao criar o canal", error: error });
 
-      res.json({ message: "canal criado"});
+      res.json({ mensagem: "canal criado"});
     },
-    {id_servidor,nome, descricao },
+    {id_servidor,nome, descricao},
   );
 });
 

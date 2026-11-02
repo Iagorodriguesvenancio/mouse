@@ -16,10 +16,15 @@ router.use(cookieParser());
 
 router.post("/", (req, res) => {
     const {id_canal} = req.body
-    Mensagem.getMensagem((error, resultado) => {
-        if (error)res.status(500).json({ mensagem: "erro ao pegar as mensagems", error: error });
 
-        res.status(200).json(resultado);
+    if(!id_canal){
+        return res.status(404).json({mensagem:"canal não existe"})
+    }
+
+    Mensagem.getMensagem((error, resultado) => {
+        if (error)return res.status(500).json({ mensagem: "erro ao pegar as mensagems", error: error });
+
+        return res.status(200).json(resultado);
     },{id_canal});
     
 })

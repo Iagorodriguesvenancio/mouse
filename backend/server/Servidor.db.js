@@ -44,12 +44,13 @@ module.exports = class Servidor{
 
     static updateServidor(callback,dados){
         pool.query(
-            "UPDATE servidor SET nome = COALESCE(?, nome), descricao = COALESCE(?, descricao), status = COALESCE(?, status) WHERE id_servidor = ?",
+            "UPDATE servidor SET nome = COALESCE(?, nome), descricao = COALESCE(?, descricao), status = COALESCE(?, status) WHERE id_servidor = ? and proprietário_server = ?",
             [
                 dados.nome,
                 dados.descricao,
                 dados.status,
-                dados.id_servidor
+                dados.id_servidor,
+                dados.proprietário_server
             ],
              error=>{
                 callback(error)
@@ -59,8 +60,8 @@ module.exports = class Servidor{
 
      static desativarServidor(callback,dados){
         pool.query(
-            "UPDATE servidor SET status= ? WHERE id_servidor = ?",
-            ["DESATIVADO",dados.id_servidor],
+            "UPDATE servidor SET status= ? WHERE id_servidor = ? and proprietário_server = ?",
+            ["DESATIVADO",dados.id_servidor,dados.proprietário_server],
             error=>{
                 callback(error)
             }

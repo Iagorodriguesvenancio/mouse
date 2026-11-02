@@ -20,14 +20,14 @@ router.post("/",auth, async (req,res)=>{
     Servidor.updateServidor((error) => {
       if (error) {
         return res.status(500).json({
-          men: "Erro ao atualizar servidor",
+          mensagem: "Erro ao atualizar servidor",
           erro: error.message,
         });
       }
       return res.status(201).json({
-        men: "Servidor atualizado com sucesso",
+        mensagem: "Servidor atualizado com sucesso",
       });
-    },{nome,descricao,status,id_servidor});
+    },{nome,descricao,status,id_servidor,proprietário_server:req.auth.userId });
 })
 
 module.exports = router;

@@ -16,13 +16,13 @@ router.post("/", (req,res) =>{
     Mensagem.desativarMensagem((error) =>{
         if(error){
             return res.status(500).json({
-                men: "Erro ao deletar as mensagens",
+                mensagem: "Erro ao deletar as mensagens",
                 erro: error.message
             })
         }
 
          return res.status(201).json({
-            men: "mensagem deletada com sucesso",
+            mensagem: "mensagem deletada com sucesso",
         });
-    })
+    },{id_mensagem})
 })

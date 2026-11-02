@@ -1,8 +1,6 @@
 const express = require('express');
 
 const cookieParser = require('cookie-parser');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
 
 const dotenv = require('dotenv').config();
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -18,13 +16,13 @@ router.post("/",auth,(req,res)=>{
     const {id_canal,mensagem} = req.body
 
     if(!id_canal || !mensagem){
-        return res.status(500).json({ men: "todos os campos são obrigatorios" });
+        return res.status(422).json({ mensagem: "todos os campos são obrigatorios" });
     }
 
     Mensagem.createMensagem((error) =>{
-        if(error) return res.status("500").json({men:"erro ao enviar a mensagem", error:error})
+        if(error) return res.status("500").json({mensagem:"erro ao enviar a mensagem", error:error})
 
-        res.json({ message: " mensagem enviada"});
+        res.json({ mensagem: " mensagem enviada"});
     },{ id_user: req.user.userId,id_canal,mensagem})
 })
 

@@ -23,7 +23,7 @@ module.exports = class Mensagem{
 
     static getMensagem(callback,dados){
         pool.query(
-            "SELECT id_user, mensagem FROM mensagem WHERE id_canal = ? and status != 'APAGADA'",
+            "SELECT usuarios.username,mensagem.mensagem FROM `mensagem` JOIN usuarios on usuarios.id_user = mensagem.id_user WHERE mensagem.id_canal = ? and mensagem.status != 'APAGADO'",
             [dados.id_canal],
             (error,resultado)=>{
                 callback(error,resultado)

@@ -17,15 +17,15 @@ router.use(cookieParser());
 router.post("/", (req, res) => {
     const { id_mensagem, mensagem } = req.body
     if (!mensagem) {
-        return res.status(500).json({ men: "todos os campos são obrigatorios" });
+        return res.status(422).json({ mensagem: "todos os campos são obrigatorios" });
     }
 
     Mensagem.updateMensagem((error) => {
         if (error) {
-            return res.status(500).json({ men: "Erro ao editar as mensagens", erro: error.message, });
+            return res.status(500).json({ mensagem: "Erro ao editar as mensagens", erro: error.message, });
         }
         return res.status(201).json({
-            men: "mensagem editada com sucesso",
+            mensagem: "mensagem editada com sucesso",
         });
     },{mensagem,id_mensagem})
 

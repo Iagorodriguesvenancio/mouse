@@ -14,8 +14,8 @@ const pool = mysql.createPool({
 module.exports = class User{
     static createUser(callback,dados){
         pool.query(
-            "INSERT INTO usuarios(username,email, cpf, password, data_criacao) VALUES (?,?,?,?,?)",
-            [dados.username, dados.email,dados.cpf, dados.password, `${data.getDate()}/${data.getMonth() + 1}/${data.getFullYear()} - ${data.getHours()}:${data.getMinutes()}:${data.getSeconds()}`],
+            "INSERT INTO usuarios(username,descricao,pronome,email, cpf, password, data_criacao) VALUES (?,?,?,?,?)",
+            [dados.username, dados.descricao, dados.pronome,dados.email,dados.cpf, dados.password, `${data.getDate()}/${data.getMonth() + 1}/${data.getFullYear()} - ${data.getHours()}:${data.getMinutes()}:${data.getSeconds()}`],
             (error,resultado) =>{
                if (error) {
             console.log("ERRO NO INSERT:", error);
@@ -38,7 +38,7 @@ module.exports = class User{
 
     static getUser(callback){
         pool.query(
-            "SELECT id_user,email,username,cpf,status,data_criacao,adm FROM `usuarios`",
+            "SELECT id_user,username,descricao,pronome,email,status,data_criacao,adm FROM `usuarios`",
             (error,resultado) =>{
                 callback(error,resultado)
             }
@@ -47,7 +47,7 @@ module.exports = class User{
 
     static getUserBusca(callback,username){
         pool.query(
-            "SELECT id_user,email,username,cpf,status,data_criacao,adm FROM `usuarios` WHERE username like ?",
+            "SELECT id_user,username,descricao,pronome,email,status,data_criacao,adm FROM `usuarios` WHERE username like ?",
             [`%${username}%`],
             (error,resultado) =>{
             
@@ -58,7 +58,7 @@ module.exports = class User{
 
     static getUserId(callback,dados){
         pool.query(
-            "SELECT id_user,email,username,cpf,status,data_criacao,adm FROM `usuarios` WHERE id_user = ?",
+            "SELECT  id_user,username,descricao,pronome,email,status,data_criacao,adm FROM `usuarios` WHERE id_user = ?",
             [dados.id],
             (error,resultado) => {
                 callback(error,resultado)
@@ -78,9 +78,11 @@ module.exports = class User{
 
     static updateUser(callback,dados){
         pool.query(
-            "UPDATE usuarios SET username = COALESCE(?, username), email = COALESCE(?, email) ,password = COALESCE(?, password), status   = COALESCE(?, status), adm = COALESCE(?, adm) WHERE id_user = ?",
+            "UPDATE usuarios SET username = COALESCE(?, username),descricao = COALESCE(?, descricao), pronome = COALESCE(?, pronome)  ,email = COALESCE(?, email) ,password = COALESCE(?, password), status   = COALESCE(?, status), adm = COALESCE(?, adm) WHERE id_user = ?",
             [
                 dados.username,
+                dados.descricao,
+                dados.pronome,
                 dados.email,
                 dados.password,
                 dados.status,
