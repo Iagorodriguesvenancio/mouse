@@ -47,7 +47,7 @@ module.exports = class Mensagem{
     static desativarMensagem(callback,dados){
         pool.query(
             "UPDATE mensagem SET status = ? WHERE id_mensagem =?",
-            ["APAGADA",dados.id_canal],
+            ["APAGADA",dados.id_mensagem],
             error =>{
                 callback(error)
             }

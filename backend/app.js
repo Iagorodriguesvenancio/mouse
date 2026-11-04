@@ -20,18 +20,21 @@ const desativarServidorRouter = require('./router/servidor/desativar.servidor.js
 const criarCanaisRouter = require("./router/canais/criar.canais.js")
 const listarCanaisRouter = require("./router/canais/listar.canais.js")
 const editarCanaisRouter = require("./router/canais/editar.canais.js")
+const desativarCanaisRouter = require("./router/canais/desativar.canais.js")
 
 const criarMensagemRouter = require("./router/mensagem/criar.mensagem.js")
 const listarMensagemRouter = require("./router/mensagem/listar.mensagem.js")
 const editarMensagemRouter = require("./router/mensagem/editar.mensgem.js")
+const desativarMensagemRouter = require("./router/mensagem/desativar.mensagem.js")
 
 const ligacao = require("./router/ligacao.js")
 
 const app = express();
 app.use(cors({
-  origin: "*", // Permite qualquer origem
+  origin: ["http://localhost:3000"], // Permite qualquer origem
   methods: ["GET", "POST", "OPTIONS", "UPDATE"], // Métodos permitidos
   allowedHeaders: ["Content-Type"], // Cabeçalhos permitidos
+  credentials:true
 }));
 
 const server = http.createServer(app);     
@@ -61,6 +64,8 @@ app.use("/editar/mensagem", editarMensagemRouter)
 // <-- rotas desativar -->
 app.use("/desativar/usuarios", desativarUsuarioRouter);
 app.use("/desativar/servidores", desativarServidorRouter);
+app.use("/desativar/canais", desativarCanaisRouter)
+app.use("/desativar/mensagem", desativarMensagemRouter)
 
 // <-- rotas buscar -->
 app.use("/buscar/usuarios", buscarUsuarioRouter)

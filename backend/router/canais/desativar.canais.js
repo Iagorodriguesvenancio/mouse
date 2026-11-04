@@ -16,10 +16,10 @@ router.post("/", auth, (req, res) => {
     const { id_canal } = req.body;
     Canais.desativarCanais(
       (error) => {
-        if (error) return res.status(500).json({mensagem: "Erro ao atualizar Canais",erro: error.message,});
+        if (error) return res.status(500).json({mensagem: "Erro ao atualizar o Canal",erro: error.message,});
         
         return res.status(201).json({
-          mensagem: "Canais desativado com sucesso",
+          mensagem: "Canal desativado com sucesso",
         });
       },
       { id_canal },
@@ -28,3 +28,5 @@ router.post("/", auth, (req, res) => {
     return res.status(403).json({ mensagem: "rota de adm" });
   }
 });
+
+module.exports = router;

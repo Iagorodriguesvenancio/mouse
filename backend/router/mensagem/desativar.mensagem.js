@@ -26,3 +26,5 @@ router.post("/", (req,res) =>{
         });
     },{id_mensagem})
 })
+
+module.exports = router

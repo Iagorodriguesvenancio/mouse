@@ -24,13 +24,13 @@ router.post("/", async (req, res) => {
             if (error) return res.status(500).json({ mensagem: "erro ao logar", error: error });
 
             if (!resultado || resultado.length === 0) {
-                return res.status(401).json({mensagem: "email não encontrado"});
+                return res.status(401).json({mensagem: "senha ou email errados"});
             }
             if (bcrypt.compareSync(password, String(resultado[0].password))) {
                 const token = jwt.sign(
                     { userId: resultado[0].id_user, adm: resultado[0].adm },
                     JWT_SECRET,
-                    { expiresIn: "24h" },
+                    { expiresIn: "1h" },
                 );
                 res.cookie("token", token, {
                     httpOnly: true,
@@ -38,7 +38,11 @@ router.post("/", async (req, res) => {
                     sameSite: "strict",
                     maxAge: 60 * 60 * 1000,
                 });
+                console.log();
+                
                 return res.json({ message: "Login realizado" });
+            }else{
+                return  res.status(401).json({mensagem: "senha ou email errados"})
             }
         },
         { email },
