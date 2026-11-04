@@ -14,8 +14,8 @@ const pool = mysql.createPool({
 module.exports = class User{
     static createUser(callback,dados){
         pool.query(
-            "INSERT INTO usuarios(username,descricao,pronome,email, cpf, password, data_criacao) VALUES (?,?,?,?,?,?,?)",
-            [dados.username, dados.descricao, dados.pronome,dados.email,dados.cpf, dados.password, `${data.getDate()}/${data.getMonth() + 1}/${data.getFullYear()} - ${data.getHours()}:${data.getMinutes()}:${data.getSeconds()}`],
+            "INSERT INTO usuarios(username,email, cpf, password, data_criacao) VALUES (?,?,?,?,?)",
+            [dados.username,dados.email,dados.cpf, dados.password, `${data.getDate()}/${data.getMonth() + 1}/${data.getFullYear()} - ${data.getHours()}:${data.getMinutes()}:${data.getSeconds()}`],
             (error,resultado) =>{
                if (error) {
             console.log("ERRO NO INSERT:", error);
@@ -59,7 +59,7 @@ module.exports = class User{
     static getUserId(callback,dados){
         pool.query(
             "SELECT  id_user,username,descricao,pronome,email,status,data_criacao,adm FROM `usuarios` WHERE id_user = ?",
-            [dados.id],
+            [dados.id_user],
             (error,resultado) => {
                 callback(error,resultado)
             }
@@ -69,7 +69,7 @@ module.exports = class User{
     static desativarUser(callback,dados){
         pool.query(
             "UPDATE usuarios SET status= ? WHERE id_user = ?",
-            ["DESATIVADO",dados.id],
+            ["DESATIVADO",dados.id_user],
             error=>{
                 callback(error)
             }

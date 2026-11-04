@@ -15,8 +15,8 @@ router.use(cookieParser());
 
 
 router.post("/", async (req, res) => {
-  const { username,descricao, pronome,email, cpf, password } = req.body;
-  if (!username || !descricao || !pronome ||!email || !cpf || !password) {
+  const { username,email, cpf, password } = req.body;
+  if (!username || !email || !cpf || !password) {
     return res.status(500).json({ mensagem: "todos os campos são obrigatorios" });
   }
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -37,7 +37,7 @@ router.post("/", async (req, res) => {
       });
       return res.json({ mensagem: "usuario criado" });
     },
-    { username, descricao, pronome, email, cpf:hashedCPF, password: hashedPassword },
+    { username, email, cpf:hashedCPF, password: hashedPassword },
   );
 });
 
