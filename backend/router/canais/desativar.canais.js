@@ -1,30 +1,30 @@
-const express = require("express")
+const express = require("express");
 
-const cookieParser = require("cookie-parser")
+const cookieParser = require("cookie-parser");
 
-const dotenv = require('dotenv').config();
+const dotenv = require("dotenv").config();
 
-const Canais = require('../../server/Canais.db.js');
-const auth = require('../../auth/authLogin.js');
+const Canais = require("../../server/Canais.db.js");
+const auth = require("../../auth/authLogin.js");
 
 const router = express.Router();
 router.use(express.json());
 router.use(cookieParser());
 
-
-router.post("/",auth,(req,res) =>{
-    const {id_canal} = req.body
-
-    Canais.desativarCanais((error)=>{
-        if(error){
-            return res.status(500).json({ 
-                mensagem: "Erro ao atualizar Canais",
-                erro: error.message
-            })
-        }
-
+router.post("/", auth, (req, res) => {
+  if (req.user.adm == 1) {
+    const { id_canal } = req.body;
+    Canais.desativarCanais(
+      (error) => {
+        if (error) return res.status(500).json({mensagem: "Erro ao atualizar Canais",erro: error.message,});
+        
         return res.status(201).json({
-            mensagem: "Canais desativado com sucesso",
+          mensagem: "Canais desativado com sucesso",
         });
-    },{id_canal})
-})
+      },
+      { id_canal },
+    );
+  } else {
+    return res.status(403).json({ mensagem: "rota de adm" });
+  }
+});

@@ -16,11 +16,8 @@ router.post("/", auth, (req, res) => {
 
 
     Servidor.getServidorBusca((error, resultado) => {
-        if (error)
-            res
-                .status(500)
-                .json({ mensagem: "erro ao pegar os servidores", error: error });
-        res.status(200).json(resultado);
+        if (error) return res.status(500).json({ mensagem: "erro ao pegar os servidores", error: error });
+        return res.status(200).json(resultado);
     }, nome);
 
 })

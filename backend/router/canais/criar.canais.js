@@ -16,21 +16,22 @@ router.use(cookieParser());
 
 
 router.post("/", auth,async (req, res) => {
+   if (req.user.adm == 1) {
+    const { id_servidor,nome, descricao } = req.body;
+    if (!id_servidor || !nome || !descricao ) {
+      return res.status(422).json({ mensagem: "todos os campos são obrigatorios" });
+    }
+    Canais.createCanais(
+      (error) => {
+        if (error) return res.status(500).json({ mensagem: "erro ao criar o canal", error: error });
 
-  const { id_servidor,nome, descricao } = req.body;
-
-  if (!id_servidor || !nome || !descricao ) {
-    return res.status(422).json({ mensagem: "todos os campos são obrigatorios" });
+        res.json({ mensagem: "canal criado"});
+      },
+      {id_servidor,nome, descricao},
+    );
+  }else{
+     return res.status(403).json({ mensagem: "rota de adm" });
   }
-  
-  Canais.createCanais(
-    (error) => {
-      if (error) return res.status(500).json({ mensagem: "erro ao criar o canal", error: error });
-
-      res.json({ mensagem: "canal criado"});
-    },
-    {id_servidor,nome, descricao},
-  );
 });
 
 module.exports = router;

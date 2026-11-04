@@ -15,7 +15,7 @@ module.exports = class Servidor{
     static createServidor(callback,dados){
         pool.query(
             "INSERT INTO servidor (nome,descricao, proprietário_server, materia) VALUES (?,?,?,?)",
-            [dados.nome, dados.descricao, dados.id_user,dados.materia],
+            [dados.nome, dados.descricao, dados.proprietário_server,dados.materia],
             (error)=>{
                 callback(error)
             }
@@ -24,7 +24,7 @@ module.exports = class Servidor{
 
     static getServidor(callback){
         pool.query(
-            "SELECT servidor.nome,servidor.descricao,usuarios.username,materias.nome FROM `servidor` JOIN usuarios ON servidor.proprietário_server = usuarios.id_user JOIN materias ON servidor.materia = materias.nome",
+            "SELECT servidor.nome,servidor.descricao,usuarios.username,materias.nome as 'materia' FROM `servidor` LEFT JOIN usuarios ON servidor.proprietário_server = usuarios.id_user LEFT JOIN materias ON servidor.materia = materias.id_materia WHERE servidor.status != 'DESATIVADO'",
             (error,resultado)=>{
                 callback(error,resultado)
             }  
@@ -33,7 +33,7 @@ module.exports = class Servidor{
     
     static getServidorBusca(callback,nome){
         pool.query(
-            "SELECT servidor.nome,servidor.descricao,usuarios.username,materias.nome FROM `servidor` JOIN usuarios ON servidor.proprietário_server = usuarios.id_user JOIN materias ON servidor.materia = materias.nome WHERE servidor.nome like ?",
+            "SELECT servidor.nome ,servidor.descricao,usuarios.username,materias.nome as 'materia' FROM `servidor` JOIN usuarios ON servidor.proprietário_server = usuarios.id_user JOIN materias ON servidor.materia = materias.id_materia WHERE servidor.nome like ? and servidor.status != 'DESATIVADO'",
             [`%${nome}%`],
             (error,resultado) =>{
             
@@ -60,8 +60,8 @@ module.exports = class Servidor{
 
      static desativarServidor(callback,dados){
         pool.query(
-            "UPDATE servidor SET status= ? WHERE id_servidor = ? and proprietário_server = ?",
-            ["DESATIVADO",dados.id_servidor,dados.proprietário_server],
+            "UPDATE servidor SET status = ? WHERE id_servidor = ?",
+            ["DESATIVADO",dados.id_servidor],
             error=>{
                 callback(error)
             }

@@ -14,7 +14,7 @@ const pool = mysql.createPool({
 module.exports = class User{
     static createUser(callback,dados){
         pool.query(
-            "INSERT INTO usuarios(username,descricao,pronome,email, cpf, password, data_criacao) VALUES (?,?,?,?,?)",
+            "INSERT INTO usuarios(username,descricao,pronome,email, cpf, password, data_criacao) VALUES (?,?,?,?,?,?,?)",
             [dados.username, dados.descricao, dados.pronome,dados.email,dados.cpf, dados.password, `${data.getDate()}/${data.getMonth() + 1}/${data.getFullYear()} - ${data.getHours()}:${data.getMinutes()}:${data.getSeconds()}`],
             (error,resultado) =>{
                if (error) {
@@ -28,8 +28,8 @@ module.exports = class User{
 
     static logar(callback,dados){
         pool.query(
-            "SELECT id_user,cpf, password,adm FROM `usuarios` WHERE cpf = ?",
-            [dados.cpf],
+            "SELECT id_user,cpf, password,adm FROM `usuarios` WHERE email = ?",
+            [dados.email],
             (error,resultado) => {
                 callback(error,resultado)
             }

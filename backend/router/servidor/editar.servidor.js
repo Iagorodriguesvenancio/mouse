@@ -15,19 +15,22 @@ router.use(express.json());
 router.use(cookieParser());
 
 router.post("/",auth, async (req,res)=>{
-  
-    let { nome, descricao, status,id_servidor } = req.body;
-    Servidor.updateServidor((error) => {
-      if (error) {
-        return res.status(500).json({
-          mensagem: "Erro ao atualizar servidor",
-          erro: error.message,
+    if (req.user.adm == 1) {
+      let { nome, descricao, status,id_servidor } = req.body;
+      Servidor.updateServidor((error) => {
+        if (error) {
+          return res.status(500).json({
+            mensagem: "Erro ao atualizar servidor",
+            erro: error.message,
+          });
+        }
+        return res.status(201).json({
+          mensagem: "Servidor atualizado com sucesso",
         });
-      }
-      return res.status(201).json({
-        mensagem: "Servidor atualizado com sucesso",
-      });
-    },{nome,descricao,status,id_servidor,proprietário_server:req.auth.userId });
+      },{nome,descricao,status,id_servidor,proprietário_server:req.user.userId });
+  }else{
+     return res.status(403).json({ mensagem: "rota de adm" });
+  }
 })
 
 module.exports = router;

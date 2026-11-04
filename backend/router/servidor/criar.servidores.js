@@ -16,18 +16,22 @@ router.use(cookieParser());
 
 
 router.post("/", auth,async (req, res) => {
-  const { nome, descricao ,materia} = req.body;
-  if (!nome || !descricao || !materia ) {
-    return res.status(500).json({ mensagem: "todos os campos são obrigatorios" });
-  }
-  Servidor.createServidor(
-    (error) => {
-      if (error) return res.status(500).json({ mensagem: "erro ao criar servidor", error: error });
+  if (req.user.adm == 1) {
+    const { nome, descricao ,materia} = req.body;
+    if (!nome || !descricao || !materia ) {
+      return res.status(500).json({ mensagem: "todos os campos são obrigatorios" });
+    }
 
-      res.json({ mensagem: "servidor criado"});
-    },
-    { nome, descricao, id_user: req.user.userId,materia },
-  );
+    Servidor.createServidor(
+      (error) => {
+        if (error) return res.status(500).json({ mensagem: "erro ao criar servidor", error: error });
+        res.json({ mensagem: "servidor criado"});
+      },
+      { nome, descricao, proprietário_server:req.user.userId,materia },
+    );
+  }else{
+     return res.status(403).json({ mensagem: "rota de adm" });
+  }
 });
 
 module.exports = router;
