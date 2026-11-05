@@ -15,6 +15,7 @@ const desativarUsuarioRouter = require('./router/usuarios/desativar.usuario.js')
 const criarServidorRouter = require('./router/servidor/criar.servidores.js');
 const listarServidorRouter = require('./router/servidor/listar.servidores.js');
 const buscarServidorRouter = require("./router/servidor/buscar.servidor.js")
+const buscarServidorUserRouter = require("./router/servidor/buscar.servidorUser.js")
 const editarServidorRouter = require('./router/servidor/editar.servidor.js');
 const desativarServidorRouter = require('./router/servidor/desativar.servidor.js');
 
@@ -53,6 +54,7 @@ app.use("/criar/mensagem", criarMensagemRouter)
 // <-- rotas listar -->
 app.use("/listar/usuarios", listarUsuarioRouter);
 app.use("/listar/servidores", listarServidorRouter);
+app.use("/listar/servidorUser",buscarServidorUserRouter)
 app.use("/listar/canais", listarCanaisRouter)
 app.use("/listar/mensagem", listarMensagemRouter)
 

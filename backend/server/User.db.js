@@ -58,7 +58,7 @@ module.exports = class User{
 
     static getUserId(callback,dados){
         pool.query(
-            "SELECT  id_user,username,descricao,pronome,email,status,data_criacao,adm FROM `usuarios` WHERE id_user = ?",
+            "SELECT  id_user,username,descricao,pronome,email,data_criacao,adm FROM `usuarios` WHERE id_user = ?",
             [dados.id_user],
             (error,resultado) => {
                 callback(error,resultado)
