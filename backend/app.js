@@ -7,6 +7,7 @@ const dotenv = require('dotenv').config();
 const cadastroRouter = require('./router/usuarios/cadastro.js');
 const loginRouter = require('./router/usuarios/login.js');
 const listarUsuarioRouter = require('./router/usuarios/listar.usuario.js');
+const buscarUsuarioIdRouter = require("./router/usuarios/buscar.usuario.js")
 const buscarUsuarioRouter = require("./router/usuarios/buscar.usuarios.js")
 const editarUsuarioRouter = require('./router/usuarios/editar.usuario.js');
 const desativarUsuarioRouter = require('./router/usuarios/desativar.usuario.js');
@@ -69,6 +70,7 @@ app.use("/desativar/mensagem", desativarMensagemRouter)
 
 // <-- rotas buscar -->
 app.use("/buscar/usuarios", buscarUsuarioRouter)
+app.use("/buscar/user", buscarUsuarioIdRouter)
 app.use("/buscar/servidores", buscarServidorRouter)
 
 // <-- rota ligacao-->
