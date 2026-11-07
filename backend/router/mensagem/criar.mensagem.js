@@ -12,18 +12,27 @@ const router = express.Router();
 router.use(express.json());
 router.use(cookieParser());
 
-router.post("/",auth,(req,res)=>{
-    const {id_canal,mensagem} = req.body
+const { enviarParaCanal } = require('../../ws.js'); // ajuste o caminho conforme sua pasta
 
-    if(!id_canal || !mensagem){
+router.post("/", auth, (req, res) => {
+    const { id_canal, mensagem } = req.body;
+
+    if (!id_canal || !mensagem) {
         return res.status(422).json({ mensagem: "todos os campos são obrigatorios" });
     }
 
-    Mensagem.createMensagem((error) =>{
-        if(error) return res.status("500").json({mensagem:"erro ao enviar a mensagem", error:error})
+    Mensagem.createMensagem((error) => {
+        if (error) return res.status(500).json({ mensagem: "erro ao enviar a mensagem", error });
 
-        res.json({ mensagem: " mensagem enviada"});
-    },{ id_user: req.user.userId,id_canal,mensagem})
-})
+        // <-- novo: manda para todos no canal
+        enviarParaCanal(id_canal, {
+            tipo: 'nova_mensagem',
+            id_user: req.user.userId,
+            id_canal,
+            mensagem
+        });
 
+        res.json({ mensagem: "mensagem enviada" });
+    }, { id_user: req.user.userId, id_canal, mensagem });
+});
 module.exports = router

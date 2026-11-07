@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const http = require('http');              
 const WebSocket = require('ws');  
+const {iniciarWS} = require("./ws.js")
 const dotenv = require('dotenv').config();
 
 const cadastroRouter = require('./router/usuarios/cadastro.js');
@@ -42,6 +43,7 @@ app.use(cors({
 
 const server = http.createServer(app);     
 const wss = new WebSocket.Server({ server })
+iniciarWS(wss);
 
 // <-- rotas cadastro e login -->
 app.use('/cadastro', cadastroRouter);
