@@ -6,6 +6,7 @@ const dotenv = require('dotenv').config();
 
 const cadastroRouter = require('./router/usuarios/cadastro.js');
 const loginRouter = require('./router/usuarios/login.js');
+const logout = require("./router/usuarios/logout.js")
 const listarUsuarioRouter = require('./router/usuarios/listar.usuario.js');
 const buscarUsuarioIdRouter = require("./router/usuarios/buscar.usuario.js")
 const buscarUsuarioRouter = require("./router/usuarios/buscar.usuarios.js")
@@ -33,7 +34,7 @@ const ligacao = require("./router/ligacao.js")
 
 const app = express();
 app.use(cors({
-  origin: ["http://localhost:3000"], // Permite qualquer origem
+  origin: ["null","http://localhost:3000","http://localhost:5500"], // Permite qualquer origem
   methods: ["GET", "POST", "OPTIONS", "UPDATE"], // Métodos permitidos
   allowedHeaders: ["Content-Type"], // Cabeçalhos permitidos
   credentials:true
@@ -45,6 +46,7 @@ const wss = new WebSocket.Server({ server })
 // <-- rotas cadastro e login -->
 app.use('/cadastro', cadastroRouter);
 app.use('/login', loginRouter);
+app.use("/logout", logout)
 
 // <-- rotas criar -->
 app.use("/criar/servidores", criarServidorRouter);

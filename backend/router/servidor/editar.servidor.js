@@ -3,6 +3,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const multer = require('multer');
 
 const dotenv = require('dotenv').config();
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -14,9 +15,34 @@ const router = express.Router();
 router.use(express.json());
 router.use(cookieParser());
 
-router.post("/",auth, async (req,res)=>{
+const storage = multer.memoryStorage();
+
+const upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 5 * 1024 * 1024 // 5 MB por imagem
+    },
+    fileFilter: (req, file, callback) => {
+        const tiposPermitidos = [
+            'image/jpeg',
+            'image/png',
+            'image/webp'
+        ];
+
+        if (tiposPermitidos.includes(file.mimetype)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Formato de imagem não permitido'));
+        }
+    }
+});
+
+router.post("/",auth,upload.fields([{ name: 'icon', maxCount: 1 },]),async (req,res)=>{
     if (req.user.adm == 1) {
       let { nome, descricao, status,id_servidor } = req.body;
+
+      const icon = req.files?.icon?.[0]?.buffer || null;
+
       Servidor.updateServidor((error) => {
         if (error) {
           return res.status(500).json({
@@ -27,7 +53,7 @@ router.post("/",auth, async (req,res)=>{
         return res.status(201).json({
           mensagem: "Servidor atualizado com sucesso",
         });
-      },{nome,descricao,status,id_servidor,proprietário_server:req.user.userId });
+      },{nome,descricao,icon,status,id_servidor,proprietário_server:req.user.userId });
   }else{
      return res.status(403).json({ mensagem: "rota de adm" });
   }

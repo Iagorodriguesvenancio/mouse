@@ -43,7 +43,7 @@ module.exports = class Servidor {
 
   static getServidor(callback) {
     pool.query(
-      "SELECT servidor.nome,servidor.descricao,usuarios.username,materias.nome as 'materia' FROM `servidor` LEFT JOIN usuarios ON servidor.proprietário_server = usuarios.id_user LEFT JOIN materias ON servidor.materia = materias.id_materia WHERE servidor.status != 'DESATIVADO'",
+      "SELECT servidor.id_servidor,servidor.nome,servidor.descricao,usuarios.username,materias.nome as 'materia', servidor.icon FROM `servidor` LEFT JOIN usuarios ON servidor.proprietário_server = usuarios.id_user LEFT JOIN materias ON servidor.materia = materias.id_materia WHERE servidor.status != 'DESATIVADO'",
       (error, resultado) => {
 
         callback(error, resultado);
@@ -53,7 +53,7 @@ module.exports = class Servidor {
 
   static getServidoresUser(callback,dados){
     pool.query(
-        "SELECT servidor.id_servidor, servidor.nome, servidor.descricao, materias.nome AS materias FROM servidor JOIN membros ON membros.id_servidor = servidor.id_servidor JOIN materias ON materias.id_materia = servidor.materia WHERE servidor.status = 'ATIVO' AND membros.id_user = ?",
+        "SELECT servidor.id_servidor, servidor.nome, servidor.descricao, materias.nome AS materias, servidor.icon FROM servidor JOIN membros ON membros.id_servidor = servidor.id_servidor JOIN materias ON materias.id_materia = servidor.materia WHERE servidor.status = 'ATIVO' AND membros.id_user = ?",
         [dados.id_user],
         (error,resultado) =>{
             callback(error, resultado);
@@ -63,7 +63,7 @@ module.exports = class Servidor {
 
   static getServidorBusca(callback, nome) {
     pool.query(
-      "SELECT servidor.nome ,servidor.descricao,usuarios.username,materias.nome as 'materia' FROM `servidor` JOIN usuarios ON servidor.proprietário_server = usuarios.id_user JOIN materias ON servidor.materia = materias.id_materia WHERE servidor.nome like ? and servidor.status != 'DESATIVADO'",
+      "SELECT servidor.nome ,servidor.descricao,usuarios.username,materias.nome as 'materia', servidor.icon FROM `servidor` JOIN usuarios ON servidor.proprietário_server = usuarios.id_user JOIN materias ON servidor.materia = materias.id_materia WHERE servidor.nome like ? and servidor.status != 'DESATIVADO'",
       [`%${nome}%`],
       (error, resultado) => {
         callback(error, resultado);
@@ -73,10 +73,11 @@ module.exports = class Servidor {
 
   static updateServidor(callback, dados) {
     pool.query(
-      "UPDATE servidor SET nome = COALESCE(?, nome), descricao = COALESCE(?, descricao), status = COALESCE(?, status) WHERE id_servidor = ? and proprietário_server = ?",
+      "UPDATE servidor SET nome = COALESCE(?, nome), descricao = COALESCE(?, descricao), icon = COALESCE(?, icon), status = COALESCE(?, status) WHERE id_servidor = ? and proprietário_server = ?",
       [
         dados.nome,
         dados.descricao,
+        dados.icon,
         dados.status,
         dados.id_servidor,
         dados.proprietário_server,

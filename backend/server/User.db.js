@@ -58,7 +58,7 @@ module.exports = class User{
 
     static getUserId(callback,dados){
         pool.query(
-            "SELECT  id_user,username,descricao,pronome,email,data_criacao,adm FROM `usuarios` WHERE id_user = ?",
+            "SELECT  id_user,username,descricao,pronome,icon,banner,data_criacao,adm FROM `usuarios` WHERE id_user = ?",
             [dados.id_user],
             (error,resultado) => {
                 callback(error,resultado)
@@ -78,7 +78,7 @@ module.exports = class User{
 
     static updateUser(callback,dados){
         pool.query(
-            "UPDATE usuarios SET username = COALESCE(?, username),descricao = COALESCE(?, descricao), pronome = COALESCE(?, pronome)  ,email = COALESCE(?, email) ,password = COALESCE(?, password), status   = COALESCE(?, status), adm = COALESCE(?, adm) WHERE id_user = ?",
+            "UPDATE usuarios SET username = COALESCE(?, username),descricao = COALESCE(?, descricao), pronome = COALESCE(?, pronome)  ,email = COALESCE(?, email) ,password = COALESCE(?, password), status   = COALESCE(?, status), icon = COALESCE(?, icon), banner = COALESCE(?, banner) WHERE id_user = ?",
             [
                 dados.username,
                 dados.descricao,
@@ -86,7 +86,8 @@ module.exports = class User{
                 dados.email,
                 dados.password,
                 dados.status,
-                dados.adm,
+                dados.icon,
+                dados.banner,
                 dados.id_user
             ],
              error=>{

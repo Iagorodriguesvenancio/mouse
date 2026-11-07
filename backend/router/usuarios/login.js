@@ -34,13 +34,13 @@ router.post("/", async (req, res) => {
                 );
                 res.cookie("token", token, {
                     httpOnly: true,
-                    secure: false, // HTTPS
-                    sameSite: "strict",
+                    secure: true, // HTTPS
+                    sameSite: "none", //strict
                     maxAge: 60 * 60 * 1000,
                 });
-                console.log();
+                console.log("a");
                 
-                return res.json({ message: "Login realizado" });
+                return res.json({ mensagem: "Login realizado" });
             }else{
                 return  res.status(401).json({mensagem: "senha ou email errados"})
             }
